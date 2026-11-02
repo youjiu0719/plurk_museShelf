@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
-  <meta name="description" content="收藏你的創作靈感：依題組分類、搜尋每一道題目、收藏、隨機抽題，也可以匯入自己的素材。">
+  <meta name="description" content="收藏你的創作靈感：依題組分類、搜尋每一道題目、收藏、隨機抽題、標記已寫過，還能備份或還原進度。">
   <title>靈感藏書室｜創作題目素材庫</title>
   <style>
     :root{--bg:#f9f8f5;--paper:#fff;--ink:#292d3d;--muted:#858998;--accent:#6558c5;--accent-dark:#5144af;--accent-weak:#f0edfc;--border:#e9e7ee;--shadow:0 7px 26px rgba(34,30,68,.045);--radius:18px}
@@ -28,6 +28,16 @@
     .grow{flex:1}
     .top-action{display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:11px;background:white;color:#5d6073;padding:9px 13px;font-weight:650;white-space:nowrap}
     .top-action:hover{border-color:#b7b0df;color:var(--accent)}
+    a.top-action{text-decoration:none}
+    .storage-hint{display:flex;gap:9px;align-items:flex-start;flex-wrap:wrap;border:1px solid #e8e5f1;background:#fffefa;border-radius:11px;margin:-3px 0 19px;padding:10px 13px;color:#777282;font-size:11px;line-height:1.8}
+    .storage-hint .hint-icon{color:#9588bf;flex-shrink:0}
+    .storage-hint .hint-text{flex:1;min-width:200px}
+    .storage-hint-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+    .storage-hint button{border:0;background:none;color:#6657bb;font-size:11px;font-weight:770;padding:0;text-decoration:underline;text-underline-offset:3px}
+    .storage-hint button:hover{color:#3f328c}
+    .detail-row.is-picked{background:#f6f2ff;border-left:3px solid #9483e4;border-radius:8px;padding-left:9px;margin-left:-12px}
+    .detail-row.is-picked .detail-text{color:#5144ad;font-weight:770}
+
     .count-dot{background:#ece9fa;color:#5d51b5;border-radius:8px;padding:0 7px;font-size:11px;line-height:22px;font-weight:800}
     .hero{background:#f2effd;margin-top:29px;border-radius:25px;position:relative;overflow:hidden;min-height:250px;padding:41px 47px;box-shadow:inset 0 0 0 1px #ece8ff}
     .hero::before{content:"";position:absolute;right:-120px;top:-130px;width:465px;height:465px;border-radius:50%;border:1px solid #dad4f4;box-shadow:0 0 0 42px #ffffff34,0 0 0 90px #e8e2f56b,0 0 0 152px #faf6ff4a}
@@ -42,7 +52,15 @@
     .searchbox input{border:0;outline:0!important;color:var(--ink);width:100%;background:transparent;min-width:0;font-size:14px}
     .searchbox input::placeholder{color:#a19fac}
     .search-key{font-size:11px;border:1px solid var(--border);border-radius:5px;color:#b2afbd;padding:1px 6px;white-space:nowrap}
+    .search-scope{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:13px;color:#77718f}
+    .search-scope-label{font-size:12px;font-weight:740;letter-spacing:.3px;margin-right:2px}
+    .scope-choice{display:inline-flex;align-items:center;gap:7px;padding:5px 11px;border:1px solid #dcd5f2;border-radius:9px;background:#f7f4ff8c;color:#6d6791;font-size:12px;font-weight:700;cursor:pointer;user-select:none;transition:background .15s,border-color .15s}
+    .scope-choice:has(input:checked){background:#fff;border-color:#aa9be1;color:#5144a6;box-shadow:0 1px 5px #7665cb15}
+    .scope-choice:focus-within{outline:2px solid #bfb5ed;outline-offset:2px}
+    .scope-choice input{width:15px;height:15px;margin:0;accent-color:#6859c0;cursor:pointer}
+    .scope-help{font-size:11px;color:#8a85a4}
     .hero-quick{display:none}
+    .hero-quick .submit-link{border:1px solid #dcd3f4;border-radius:9px;background:#fff9;color:#6859b0;font-size:12px;font-weight:700;padding:7px 13px;text-decoration:none}
     .content{display:grid;grid-template-columns:225px minmax(0,1fr);gap:36px;margin-top:37px;align-items:start;padding-bottom:100px}
     .sidebar{position:sticky;top:100px}
     .sidebar-title,.side-footer-title{font-size:11px;font-weight:820;letter-spacing:1.4px;color:#a0a0ad;margin:0 0 17px 11px}
@@ -158,7 +176,7 @@
     @media(max-width:760px){.progress-controls{justify-content:flex-start;gap:8px}.random-by-category{padding:9px 11px}.detail-row{gap:6px;flex-wrap:wrap}.detail-content{flex-basis:calc(100% - 40px)}.detail-row .complete-toggle{margin-left:37px}.detail-row .icon-btn{margin-left:2px}.prompt-card{min-height:155px}}
     @media(max-width:1100px){.shell{padding:0 24px}.content{grid-template-columns:190px minmax(0,1fr);gap:22px}.card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.mainnav{margin-left:8px}.hero:after{right:40px}}
     @media(max-width:760px){.shell{padding:0 16px}.topbar{height:64px}.brand-name{font-size:15px}.brand-en{display:none}.brand-mark{height:34px;width:34px;font-size:21px}.mainnav{margin-left:auto;gap:0}.nav-button{padding:8px 9px;font-size:12px;gap:5px}.nav-button svg{width:15px}.top-action{display:none}.hero{margin-top:16px;padding:29px 23px 26px;min-height:0;border-radius:18px}.hero::before{right:-260px}.hero:after{right:25px;top:5px;font-size:65px;opacity:.6}h1{font-size:27px}.hero p{font-size:12px;margin-bottom:20px}.searchbox{height:50px}.hero-quick{display:flex;gap:8px;margin-top:13px}.hero-quick button{border:1px solid #dcd3f4;border-radius:9px;background:#fff9;color:#6859b0;font-size:12px;font-weight:700;padding:7px 13px}.content{display:block;margin-top:25px;padding-bottom:60px}.sidebar{position:static;margin-bottom:24px}.sidebar-title{margin:0 0 10px}.category-list{flex-direction:row;overflow:auto;padding-bottom:6px;scrollbar-width:none;gap:7px}.category-list::-webkit-scrollbar{display:none}.cat-btn{width:auto;flex:0 0 auto;padding:7px 11px;background:#fff;border:1px solid var(--border);font-size:12px;gap:7px}.cat-btn.active{border-color:#d7c9f7}.cat-symbol{width:auto}.cat-num{margin-left:0}.side-divider{display:none}.side-note{margin-top:5px;display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:10px;gap:10px}.side-small{display:none}.section-header{align-items:flex-start;flex-direction:column;gap:13px;margin-bottom:16px}h2{font-size:20px}.section-sub{font-size:11px}.view-tools{width:100%;justify-content:space-between}.card-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.group-card{padding:14px 13px;min-height:239px;border-radius:14px}.group-title{font-size:14px;margin-top:9px}.preview-list{padding-top:10px}.preview-list li{font-size:11px}.group-meta{font-size:10px}.group-foot{align-items:flex-start}.open-btn{font-size:11px}.foot-count{font-size:10px}.prompt-grid{grid-template-columns:1fr}.footer{flex-direction:column;align-items:flex-start}.dialog-head{padding:18px}.dialog-head h2{font-size:19px}.dialog-actions{padding:12px 16px}.dialog-body{padding:6px 16px 20px}.overlay{padding:9px}.dialog{max-height:91vh;border-radius:16px}.random-card{padding:30px 20px}.random-card .random-title{font-size:21px}}
-    @media(max-width:430px){.nav-button{padding:8px;font-size:11px}.brand{gap:7px}.brand-name{font-size:14px}.nav-button .nav-label{display:none}.card-grid{grid-template-columns:1fr}.group-card{min-height:215px}.preview-list{min-height:auto}.hero:after{right:0;opacity:.28}.search-key{display:none}}
+    @media(max-width:430px){.storage-hint .hint-text{min-width:190px}.search-scope{gap:8px}.scope-help{width:100%}.search-scope-label{width:100%;margin-right:0}.nav-button{padding:8px;font-size:11px}.brand{gap:7px}.brand-name{font-size:14px}.nav-button .nav-label{display:none}.card-grid{grid-template-columns:1fr}.group-card{min-height:215px}.preview-list{min-height:auto}.hero:after{right:0;opacity:.28}.search-key{display:none}}
   </style>
 </head>
 <body>
@@ -171,7 +189,7 @@
       </nav>
       <div class="grow"></div>
       <button class="top-action" data-action="random" title="從目前分類隨機抽題"><span>✧</span> 隨機抽題</button>
-      <button class="top-action" data-action="import" title="匯入新的 TXT 或備份 JSON">＋ 匯入素材</button>
+      <a class="top-action" href="mailto:19.youjiu@gmail.com?subject=%E3%80%90%E9%9D%88%E6%84%9F%E8%97%8F%E6%9B%B8%E5%AE%A4%E3%80%91%E5%89%B5%E4%BD%9C%E9%A1%8C%E7%9B%AE%E6%8A%95%E7%A8%BF&amp;body=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%83%B3%E6%8A%95%E7%A8%BF%E6%96%B0%E7%9A%84%E5%89%B5%E4%BD%9C%E9%A1%8C%E7%B5%84%EF%BC%9A%0A%0A%E9%A1%8C%E7%B5%84%E5%90%8D%E7%A8%B1%EF%BC%9A%0A%E5%8E%9F%E4%BD%9C%E8%80%85%EF%BC%8F%E4%BE%86%E6%BA%90%E9%80%A3%E7%B5%90%EF%BC%9A%0A%E9%A1%8C%E7%9B%AE%E5%85%A7%E5%AE%B9%EF%BC%88%E5%8F%AF%E7%9B%B4%E6%8E%A5%E8%B2%BC%E4%B8%8A%E6%B8%85%E5%96%AE%EF%BC%89%EF%BC%9A%0A%0A%E5%85%B6%E4%BB%96%E8%AA%AA%E6%98%8E%EF%BC%9A%0A" title="開啟郵件程式，寄送創作題組給站長">✉ 投稿素材</a>
     </div>
   </header>
   <div class="shell">
@@ -182,10 +200,16 @@
         <p>從日常生活到架空世界，找到適合故事、角色與創作練習的命題。<span id="heroStats"></span></p>
         <label class="searchbox" for="searchInput">
           <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><path d="m16.5 16.5 5 5"/></svg>
-          <input id="searchInput" type="search" placeholder="搜尋題目、題組、情境關鍵字…" autocomplete="off">
+          <input id="searchInput" type="search" placeholder="搜尋主題，例如：初戀、萬聖節…" autocomplete="off">
           <span class="search-key">Ctrl K</span>
         </label>
-        <div class="hero-quick"><button data-action="random">✧ 隨機抽題</button><button data-action="import">＋ 匯入素材</button></div>
+        <div class="search-scope" role="group" aria-label="選擇關鍵字搜尋範圍">
+          <span class="search-scope-label">搜尋範圍</span>
+          <label class="scope-choice"><input id="searchInTitles" type="checkbox" checked><span>主題（題組名稱）</span></label>
+          <label class="scope-choice"><input id="searchInItems" type="checkbox"><span>題目（單題文字）</span></label>
+          <span class="scope-help">可複選，至少選一項</span>
+        </div>
+        <div class="hero-quick"><button data-action="random">✧ 隨機抽題</button><a href="mailto:19.youjiu@gmail.com?subject=%E3%80%90%E9%9D%88%E6%84%9F%E8%97%8F%E6%9B%B8%E5%AE%A4%E3%80%91%E5%89%B5%E4%BD%9C%E9%A1%8C%E7%9B%AE%E6%8A%95%E7%A8%BF&amp;body=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%83%B3%E6%8A%95%E7%A8%BF%E6%96%B0%E7%9A%84%E5%89%B5%E4%BD%9C%E9%A1%8C%E7%B5%84%EF%BC%9A%0A%0A%E9%A1%8C%E7%B5%84%E5%90%8D%E7%A8%B1%EF%BC%9A%0A%E5%8E%9F%E4%BD%9C%E8%80%85%EF%BC%8F%E4%BE%86%E6%BA%90%E9%80%A3%E7%B5%90%EF%BC%9A%0A%E9%A1%8C%E7%9B%AE%E5%85%A7%E5%AE%B9%EF%BC%88%E5%8F%AF%E7%9B%B4%E6%8E%A5%E8%B2%BC%E4%B8%8A%E6%B8%85%E5%96%AE%EF%BC%89%EF%BC%9A%0A%0A%E5%85%B6%E4%BB%96%E8%AA%AA%E6%98%8E%EF%BC%9A%0A" class="submit-link">✉ 投稿素材</a></div>
       </div>
     </section>
     <div class="content">
@@ -201,13 +225,14 @@
           <div class="view-tools" id="viewTools"><div class="segmented" role="group" aria-label="瀏覽模式"><button class="segment active" data-action="mode" data-mode="groups" id="modeGroups">題組</button><button class="segment" data-action="mode" data-mode="prompts" id="modePrompts">單題</button></div><select class="sort-select" id="progressFilter" aria-label="完成狀態"><option value="all">全部題目</option><option value="todo">只看未寫過</option><option value="done">只看已寫過</option></select><select class="sort-select" id="sortSelect" aria-label="排序方式"><option value="recent">新收錄優先</option><option value="original">依原始順序</option><option value="name">依名稱排序</option><option value="count">題數最多優先</option></select></div>
         </div>
         <div class="progress-controls" style="padding:0 0 20px;justify-content:flex-start"><button class="random-by-category" data-action="random" id="randomScopeButton">✧ 從目前分類隨機抽題</button><label class="random-only"><input id="randomUnwritten" type="checkbox">只抽未寫過</label><span class="draw-scope" id="randomScopeHint"></span></div>
+        <div class="storage-hint" role="note"><span class="hint-icon" aria-hidden="true">ⓘ</span><span class="hint-text">「已寫過」與收藏會自動保存在<strong>目前裝置的這個瀏覽器</strong>。同網址改版通常會保留；換網址、換裝置或清除網站資料前，請先備份。</span><span class="storage-hint-actions"><button type="button" data-action="backup">下載備份</button><button type="button" data-action="restore">還原備份</button></span></div>
         <div id="results" aria-live="polite"></div>
         <div class="more-wrap" id="moreWrap" hidden><button class="load-more" data-action="loadMore">顯示更多題目</button></div>
       </main>
     </div>
-    <footer class="footer"><span>✦ 靈感藏書室 · 你的私人創作題庫</span><span>所有素材儲存在此網頁內；收藏、已完成進度及自行匯入資料儲存於目前瀏覽器。<a href="#" id="backupLink" style="color:#8473bd;text-decoration:none;margin-left:8px">備份資料</a></span></footer>
+    <footer class="footer"><span>✦ 靈感藏書室 · 你的私人創作題庫</span><span>完成紀錄與收藏僅儲存於目前瀏覽器，不會自動同步到其他裝置。<a href="#" id="backupLink" style="color:#8473bd;text-decoration:none;margin-left:8px">下載備份</a> · <a href="#" id="restoreLink" style="color:#8473bd;text-decoration:none">還原備份</a> · <a href="mailto:19.youjiu@gmail.com" style="color:#8473bd;text-decoration:none">聯絡站長</a></span></footer>
   </div>
-  <input type="file" id="fileInput" accept=".txt,.json,text/plain,application/json" hidden>
+  <input type="file" id="backupInput" accept=".json,application/json" aria-label="還原題庫紀錄備份 JSON" hidden>
   <div id="modalRoot"></div><div id="toast" role="status" aria-live="polite"></div>
   <script>
   'use strict';
@@ -235,6 +260,10 @@
   let completed=new Set(Array.isArray(saved.completed)?saved.completed:[]);
   let progressFilter='all';
   let randomUnwritten=Boolean(saved.randomUnwritten);
+  // 搜尋範圍與瀏覽模式分開：主題搜尋比對題組名稱；題目搜尋只比對單題文字。
+  let searchInTitles=typeof saved.searchInTitles==='boolean'?saved.searchInTitles:true;
+  let searchInItems=typeof saved.searchInItems==='boolean'?saved.searchInItems:false;
+  if(!searchInTitles&&!searchInItems)searchInTitles=true;
   let currentCategory='全部';
   let currentPage='explore';
   let mode='groups';
@@ -257,14 +286,17 @@
     return '靈感・挑戰';
   }
   const categoryStyle=name=>(CATEGORIES.find(c=>c.name===name)||{}).style||'';
-  const save=()=>safeStorage.set(STORAGE_KEY,JSON.stringify({custom,favorites:[...favs],bookmarks:[...bookmarks],completed:[...completed],showAdult,randomUnwritten}));
+  const save=()=>safeStorage.set(STORAGE_KEY,JSON.stringify({custom,favorites:[...favs],bookmarks:[...bookmarks],completed:[...completed],showAdult,randomUnwritten,searchInTitles,searchInItems}));
   const isVisibleGroup=g=>showAdult||g.category!=='成人向 18+';
   const visibleItems=g=>(g.items||[]).filter(item=>showAdult||(!g.mature&&!item.adult));
   const promptKey=(g,item)=>`${g.id}:${item.index}`;
   const visibleGroups=()=>allGroups().filter(g=>isVisibleGroup(g)&&visibleItems(g).length);
   const isCompleted=(g,item)=>completed.has(promptKey(g,item));
   const matchesProgress=(g,item)=>progressFilter==='all'||(progressFilter==='done'?isCompleted(g,item):!isCompleted(g,item));
-  const matchesText=(item,q)=>[item.text,item.explanation,item.requirement].some(v=>String(v||'').toLocaleLowerCase().includes(q));
+  // 僅搜尋單題文字，不搜尋隱藏的說明／寫作要求，避免出現看似不相干的結果。
+  const matchesItemText=(item,q)=>String(item.text||'').toLocaleLowerCase().includes(q);
+  const matchesGroupTitle=(g,q)=>searchInTitles&&g.title.toLocaleLowerCase().includes(q);
+  const matchesScopedItem=(item,q)=>searchInItems&&matchesItemText(item,q);
   function completedButton(g,item){const done=isCompleted(g,item);return `<button class="complete-toggle ${done?'is-done':''}" type="button" data-action="complete" data-id="${esc(g.id)}" data-num="${item.index}" aria-pressed="${done}" title="${done?'取消已寫過標記':'標記已寫過'}">${done?'✓ 已寫過':'○ 標記已寫過'}</button>`}
   function noteDetails(item){return item.explanation||item.requirement?`<div class="detail-context">${item.explanation?`<div><b>說明：</b>${esc(item.explanation)}</div>`:''}${item.requirement?`<div><b>要求：</b>${esc(item.requirement)}</div>`:''}</div>`:''}
   const copyPromptText=item=>item.text+(item.explanation?'\n說明：'+item.explanation:'')+(item.requirement?'\n要求：'+item.requirement:'');
@@ -286,8 +318,9 @@
       if(currentCategory!=='全部'&&currentCategory!=='本次新增'&&g.category!==currentCategory)return false;
       const items=visibleItems(g);
       if(currentPage==='favorites'&&!bookmarks.has(g.id)&&!items.some(item=>favs.has(promptKey(g,item))))return false;
-      if(!items.some(item=>matchesProgress(g,item)))return false;
-      if(q&&!g.title.toLocaleLowerCase().includes(q)&&!items.some(item=>matchesText(item,q)))return false;
+      const available=items.filter(item=>matchesProgress(g,item));
+      if(!available.length)return false;
+      if(q&&!matchesGroupTitle(g,q)&&!available.some(item=>matchesScopedItem(item,q)))return false;
       return true;
     }).sort((a,b)=>order==='recent'?b.sourceLine-a.sourceLine:order==='name'?a.title.localeCompare(b.title,'zh-Hant'):order==='count'?visibleItems(b).length-visibleItems(a).length:a.sourceLine-b.sourceLine);
   }
@@ -297,11 +330,11 @@
     for(const g of visibleGroups()){
       if(currentCategory==='本次新增'&&!g.id.startsWith('new-'))continue;
       if(currentCategory!=='全部'&&currentCategory!=='本次新增'&&g.category!==currentCategory)continue;
-      const titleMatch=g.title.toLocaleLowerCase().includes(q);
+      const titleMatch=q&&matchesGroupTitle(g,q);
       for(const item of visibleItems(g)){
         if(currentPage==='favorites'&&!favs.has(promptKey(g,item))&&!bookmarks.has(g.id))continue;
         if(!matchesProgress(g,item))continue;
-        if(q&&!titleMatch&&!matchesText(item,q))continue;
+        if(q&&!titleMatch&&!matchesScopedItem(item,q))continue;
         out.push({g,item});
       }
     }
@@ -328,16 +361,18 @@
   function groupCard(g){
     const items=visibleItems(g);
     const isFav=bookmarks.has(g.id);
-    const matched=items.filter(i=>matchesProgress(g,i)&&(!query.trim()||g.title.toLocaleLowerCase().includes(query.toLocaleLowerCase())||matchesText(i,query.toLocaleLowerCase())));
+    const q=query.trim().toLocaleLowerCase();
+    const titleMatch=q&&matchesGroupTitle(g,q);
+    const matched=items.filter(i=>matchesProgress(g,i)&&(!q||titleMatch||matchesScopedItem(i,q)));
     const doneCount=items.filter(i=>isCompleted(g,i)).length;
     const sample=matched.slice(0,3);
-    const lines=sample.map(item=>`<li><span>${String(item.index).padStart(2,'0')}</span>${highlight(item.text.replace(/\n/g,' · '))}</li>`).join('');
-    const matchLabel=query?`${matched.length} 個符合關鍵字`:`${items.length} 個創作命題`;
-    return `<article class="group-card"><div class="group-top">${categoryLabel(g.category)}<button class="icon-btn ${isFav?'selected':''}" data-action="bookmark" data-id="${esc(g.id)}" aria-label="${isFav?'取消收藏題組':'收藏題組'}" title="${isFav?'取消收藏':'收藏題組'}">${ic('star')}</button></div><h3 class="group-title">${highlight(g.title)}</h3><div class="group-meta">${fmt(items.length)} 道題目 · <span class="progress-count">已寫 ${doneCount}/${items.length}</span> ${g.version>1?`<span class="version">版本 ${g.version}</span>`:''}</div><div class="progress-meter" aria-hidden="true"><span style="width:${items.length?100*doneCount/items.length:0}%"></span></div><ul class="preview-list">${lines}</ul><div class="group-foot"><button class="open-btn" data-action="open" data-id="${esc(g.id)}">查看完整題組 ${ic('arrow')}</button><span class="foot-count">${matchLabel}</span></div></article>`;
+    const lines=sample.map(item=>`<li><span>${String(item.index).padStart(2,'0')}</span>${highlight(item.text.replace(/\n/g,' · '),searchInItems?query:'')}</li>`).join('');
+    const matchLabel=q?(titleMatch?'符合主題名稱':`${matched.length} 道題目符合`):`${items.length} 個創作命題`;
+    return `<article class="group-card"><div class="group-top">${categoryLabel(g.category)}<button class="icon-btn ${isFav?'selected':''}" data-action="bookmark" data-id="${esc(g.id)}" aria-label="${isFav?'取消收藏題組':'收藏題組'}" title="${isFav?'取消收藏':'收藏題組'}">${ic('star')}</button></div><h3 class="group-title">${highlight(g.title,searchInTitles?query:'')}</h3><div class="group-meta">${fmt(items.length)} 道題目 · <span class="progress-count">已寫 ${doneCount}/${items.length}</span> ${g.version>1?`<span class="version">版本 ${g.version}</span>`:''}</div><div class="progress-meter" aria-hidden="true"><span style="width:${items.length?100*doneCount/items.length:0}%"></span></div><ul class="preview-list">${lines}</ul><div class="group-foot"><button class="open-btn" data-action="open" data-id="${esc(g.id)}">查看完整題組 ${ic('arrow')}</button><span class="foot-count">${matchLabel}</span></div></article>`;
   }
   function promptCard(entry){
     const {g,item}=entry,k=promptKey(g,item),isFav=favs.has(k);
-    return `<article class="prompt-card ${isCompleted(g,item)?'is-done':''}"><div class="prompt-top"><div class="mini-meta">#${String(item.index).padStart(2,'0')} · ${highlight(g.title)}</div><button class="icon-btn ${isFav?'selected':''}" aria-label="${isFav?'取消收藏':'收藏此題'}" data-action="star" data-id="${esc(g.id)}" data-num="${item.index}">${ic('star')}</button></div><div class="prompt-title">${highlight(item.text)}</div><div class="prompt-foot"><button class="text-button" data-action="open" data-id="${esc(g.id)}">${esc(g.category)}</button><button class="text-button" data-action="copy" data-id="${esc(g.id)}" data-num="${item.index}">${ic('copy')} 複製</button>${completedButton(g,item)}</div></article>`;
+    return `<article class="prompt-card ${isCompleted(g,item)?'is-done':''}"><div class="prompt-top"><div class="mini-meta">#${String(item.index).padStart(2,'0')} · ${highlight(g.title,searchInTitles?query:'')}</div><button class="icon-btn ${isFav?'selected':''}" aria-label="${isFav?'取消收藏':'收藏此題'}" data-action="star" data-id="${esc(g.id)}" data-num="${item.index}">${ic('star')}</button></div><div class="prompt-title">${highlight(item.text,searchInItems?query:'')}</div><div class="prompt-foot"><button class="text-button" data-action="open" data-id="${esc(g.id)}">${esc(g.category)}</button><button class="text-button" data-action="copy" data-id="${esc(g.id)}" data-num="${item.index}">${ic('copy')} 複製</button>${completedButton(g,item)}</div></article>`;
   }
   function emptyView(){return `<div class="empty"><span class="empty-star">✧</span><h3>這裡暫時沒有找到靈感</h3><p>${currentPage==='favorites'?'點選題組或題目上的星星，就可以在這裡看到收藏。':'試著換個關鍵字，或選擇其他分類看看。'}</p><button class="secondary-btn" data-action="reset">${currentPage==='favorites'?'返回探索題庫':'清除篩選'}</button></div>`}
   function render(){
@@ -350,7 +385,11 @@
     const prefix=currentPage==='favorites'?'我的收藏':currentCategory==='全部'?'全部靈感題組':currentCategory;
     $('#sectionTitle').textContent=query?`搜尋「${query}」`:prefix;
     const count=mode==='groups'?groups.length:prompts.length;
-    $('#sectionSub').textContent=`找到 ${fmt(count)} ${mode==='groups'?'組題庫':'道題目'}${query?' · 會同步搜尋題組名稱與題目文字':''} · 原始內容照錄保留`;
+    const searchHint=searchInTitles&&searchInItems?'主題＋題目':searchInTitles?'主題名稱':'單題文字';
+    $('#sectionSub').textContent=`找到 ${fmt(count)} ${mode==='groups'?'組題庫':'道題目'}${query?` · 搜尋範圍：${searchHint}`:''} · 原始內容照錄保留`;
+    $('#searchInTitles').checked=searchInTitles;
+    $('#searchInItems').checked=searchInItems;
+    $('#searchInput').placeholder=searchInTitles&&searchInItems?'搜尋主題或單題內容…':searchInTitles?'搜尋主題，例如：初戀、萬聖節…':'搜尋題目文字，例如：雨天、咖啡…';
     $('#modeGroups').classList.toggle('active',mode==='groups');
     $('#modePrompts').classList.toggle('active',mode==='prompts');
     $('#sortSelect').value=order;
@@ -376,17 +415,18 @@
     node.remove();
   }
   function downloadText(name,content,mime='text/plain;charset=utf-8'){const blob=new Blob(['\uFEFF',content],{type:mime}),link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download=name.replace(/[\\/:*?"<>|]/g,'_');document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(link.href),2000)}
-  function openGroup(id){
+  function openGroup(id,focusNum){
     const g=getGroup(id);if(!g||!isVisibleGroup(g))return;
     const items=visibleItems(g),isFav=bookmarks.has(g.id),doneCount=items.filter(i=>isCompleted(g,i)).length;openDetailId=id;
     const content=items.map(item=>{
       const k=promptKey(g,item);
-      return `<div class="detail-row ${isCompleted(g,item)?'is-done':''}"><span class="detail-num">${String(item.index).padStart(2,'0')}</span><div class="detail-content"><div class="detail-text">${highlight(item.text)}</div>${noteDetails(item)}</div>${completedButton(g,item)}<button class="icon-btn ${favs.has(k)?'selected':''}" data-action="star" data-id="${esc(g.id)}" data-num="${item.index}" aria-label="收藏此題" title="收藏此題">${ic('star')}</button><button class="icon-btn" data-action="copy" data-id="${esc(g.id)}" data-num="${item.index}" aria-label="複製此題（包含說明與要求）" title="複製此題">${ic('copy')}</button></div>`
+      return `<div data-row-num="${item.index}" class="detail-row ${isCompleted(g,item)?'is-done':''} ${Number(focusNum)===item.index?'is-picked':''}"><span class="detail-num">${String(item.index).padStart(2,'0')}</span><div class="detail-content"><div class="detail-text">${highlight(item.text)}</div>${noteDetails(item)}</div>${completedButton(g,item)}<button class="icon-btn ${favs.has(k)?'selected':''}" data-action="star" data-id="${esc(g.id)}" data-num="${item.index}" aria-label="收藏此題" title="收藏此題">${ic('star')}</button><button class="icon-btn" data-action="copy" data-id="${esc(g.id)}" data-num="${item.index}" aria-label="複製此題（包含說明與要求）" title="複製此題">${ic('copy')}</button></div>`
     }).join('');
     const author=g.authorNote?`<div class="author-note"><strong>原作者的話（請轉載時保留說明與要求）</strong>${esc(g.authorNote)}</div>`:'';
     const source=g.sourceUrl?`<a class="source-link" href="${esc(g.sourceUrl)}" target="_blank" rel="noopener noreferrer">查看原始來源 ↗</a>`:'';
     $('#modalRoot').innerHTML=`<div class="overlay" data-action="closeOverlay"><div class="dialog" role="dialog" aria-modal="true" aria-label="${esc(g.title)}"><div class="dialog-head"><div class="dialog-head-info">${categoryLabel(g.category)}<h2>${esc(g.title)} ${g.version>1?`<span style="font-size:12px;color:#8b7bd2">版本 ${g.version}</span>`:''}</h2><div class="dialog-desc">${fmt(items.length)} 道題目 · <span id="detailProgress">已寫過 ${doneCount}/${items.length}</span>${g.note?' · '+esc(g.note):''} ${source}</div></div><button class="icon-btn" data-action="close" aria-label="關閉">${ic('close')}</button></div><div class="dialog-actions"><button class="action-btn ${isFav?'primary':''}" data-action="bookmark" data-id="${esc(g.id)}">${ic('star')} ${isFav?'已收藏題組':'收藏整組'}</button><button class="action-btn" data-action="copyGroup" data-id="${esc(g.id)}">${ic('copy')} 複製整組</button><button class="action-btn" data-action="downloadGroup" data-id="${esc(g.id)}">${ic('download')} 匯出 TXT</button><button class="action-btn" data-action="randomGroup" data-id="${esc(g.id)}">${ic('shuffle')} 從這組抽題</button></div><div class="dialog-body">${author}${content}</div></div></div>`;
     document.body.style.overflow='hidden';
+    if(focusNum){const focused=$(`#modalRoot .detail-row[data-row-num="${Number(focusNum)}"]`);if(focused){focused.scrollIntoView({block:'center',behavior:'instant'});}}
   }
   function closeDialog(){openDetailId=null;lastRandom=null;$('#modalRoot').innerHTML='';document.body.style.overflow=''}
   function pickRandom(id){
@@ -400,51 +440,45 @@
     lastRandom=promptKey(selected.g,selected.item);
     const {g,item}=selected,isFav=favs.has(lastRandom);
     const context=noteDetails(item);
-    $('#modalRoot').innerHTML=`<div class="overlay" data-action="closeOverlay"><div class="dialog" role="dialog" aria-modal="true" aria-label="隨機靈感"><div class="dialog-head"><div class="dialog-head-info"><span class="pill">RANDOM INSPIRATION</span><h2>讓靈感決定下一段故事</h2><div class="dialog-desc">抽題範圍：${esc(id?g.title:currentCategory==='全部'?'全部分類':currentCategory)}${randomUnwritten?' · 只抽未寫過':''}</div></div><button class="icon-btn" data-action="close" aria-label="關閉">${ic('close')}</button></div><div class="random-card"><div class="random-illustration">✧</div><div class="random-label">#${String(item.index).padStart(2,'0')} · 隨機命題</div><div class="random-title">${esc(item.text)}</div><div class="random-group">出自 ${esc(g.title)}</div>${context?`<div class="random-context">${context}</div>`:''}<div class="random-actions"><button class="action-btn primary" data-action="randomAgain" data-id="${id?esc(id):''}">${ic('shuffle')} 再抽一題</button><button class="action-btn" data-action="copy" data-id="${esc(g.id)}" data-num="${item.index}">${ic('copy')} 複製</button><button class="action-btn" data-action="star" data-id="${esc(g.id)}" data-num="${item.index}">${ic('star')} ${isFav?'已收藏':'收藏'}</button>${completedButton(g,item)}</div></div></div></div>`;
+    $('#modalRoot').innerHTML=`<div class="overlay" data-action="closeOverlay"><div class="dialog" role="dialog" aria-modal="true" aria-label="隨機靈感"><div class="dialog-head"><div class="dialog-head-info"><span class="pill">RANDOM INSPIRATION</span><h2>讓靈感決定下一段故事</h2><div class="dialog-desc">抽題範圍：${esc(id?g.title:currentCategory==='全部'?'全部分類':currentCategory)}${randomUnwritten?' · 只抽未寫過':''}</div></div><button class="icon-btn" data-action="close" aria-label="關閉">${ic('close')}</button></div><div class="random-card"><div class="random-illustration">✧</div><div class="random-label">#${String(item.index).padStart(2,'0')} · 隨機命題</div><div class="random-title">${esc(item.text)}</div><div class="random-group">出自 ${esc(g.title)}</div>${context?`<div class="random-context">${context}</div>`:''}<div class="random-actions"><button class="action-btn primary" data-action="randomAgain" data-id="${id?esc(id):''}">${ic('shuffle')} 再抽一題</button><button class="action-btn" data-action="goToGroup" data-id="${esc(g.id)}" data-num="${item.index}">${ic('arrow')} 查看這組完整題目</button><button class="action-btn" data-action="copy" data-id="${esc(g.id)}" data-num="${item.index}">${ic('copy')} 複製</button><button class="action-btn" data-action="star" data-id="${esc(g.id)}" data-num="${item.index}">${ic('star')} ${isFav?'已收藏':'收藏'}</button>${completedButton(g,item)}</div></div></div></div>`;
     document.body.style.overflow='hidden';
   }
-  function parseTxt(raw,name){
-    const content=raw.replace(/^\uFEFF/,'').replace(/\r\n?/g,'\n');
-    const output=[];let group=null;
-    const add=()=>{if(group&&group.items.length){group.count=group.items.length;output.push(group)}group=null};
-    const suffix=name.replace(/\.[^.]+$/,'')||'自訂題庫';
-    for(const untrim of content.split('\n')){
-      const s=untrim.trim();if(!s)continue;
-      const m=s.match(/^【([^】]+)】(.*)$/);
-      if(m){add();group={title:m[1]+(m[2].trim()?' '+m[2].trim():''),items:[]};continue}
-      if(!group)group={title:suffix,items:[]};
-      const match=s.match(/^\d{1,3}\s*[.．、，)）:：]\s*(.*)$/);
-      const text=(match?match[1]:s).trim();
-      if(text)group.items.push({index:group.items.length+1,text,adult:false});
-    }
-    add();return output;
-  }
-  async function handleImport(file){
+  // 題目投稿改為郵件連結；僅支援從舊版及新版的 JSON 備份還原使用者紀錄。
+  async function restoreBackup(file){
     if(!file)return;
     try{
-      const raw=await file.text();
-      if(file.name.toLowerCase().endsWith('.json')){
-        const data=JSON.parse(raw);
-        if(data?.format==='prompt-atlas-backup'){
-          if(!confirm('將還原備份中的自訂題庫與收藏，並覆蓋目前的自訂資料。確定繼續？'))return;
-          custom=Array.isArray(data.custom)?data.custom:[];favs=new Set(data.favorites||[]);bookmarks=new Set(data.bookmarks||[]);completed=new Set(data.completed||[]);showAdult=Boolean(data.showAdult);randomUnwritten=Boolean(data.randomUnwritten);toast('已還原備份');
-        }else{const rows=Array.isArray(data)?data:Array.isArray(data.groups)?data.groups:[];if(!rows.length)throw Error('找不到可匯入的題組');addCustom(rows);toast(`已匯入 ${rows.length} 組題庫`)}
-      }else{const rows=parseTxt(raw,file.name);if(!rows.length)throw Error('檔案中沒有可辨識的題目');addCustom(rows);toast(`已匯入 ${rows.length} 組題庫`)}
-      save();currentPage='explore';currentCategory='全部';mode='groups';query='';$('#searchInput').value='';limit=42;render();
-    }catch(err){alert('匯入失敗：'+err.message)}finally{$('#fileInput').value=''}
-  }
-  function addCustom(rows){
-    const start=Date.now();let n=0;
-    const formatted=rows.filter(row=>row&&typeof row.title==='string'&&Array.isArray(row.items)).map(row=>{
-      const items=row.items.map((v,i)=>({index:i+1,text:typeof v==='string'?v:String(v?.text??''),adult:!!v?.adult})).filter(x=>x.text.trim());
-      return {id:`u${start}_${n++}`,title:row.title,category:CATEGORIES.some(c=>c.name===row.category)?row.category:inferCategory(row.title),items,sourceLine:100000+n,version:1,mature:(CATEGORIES.some(c=>c.name===row.category)?row.category:inferCategory(row.title))==='成人向 18+',note:'自行匯入的素材',count:items.length};
-    }).filter(g=>g.items.length);
-    if(!formatted.length)throw Error('沒有有效的題目');custom=custom.concat(formatted);
-    if(!save())throw Error('瀏覽器儲存空間不足，請先備份資料');
+      if(!file.name.toLowerCase().endsWith('.json'))throw Error('請選擇由本網站匯出的 JSON 備份檔');
+      const data=JSON.parse(await file.text());
+      if(!data||data.format!=='prompt-atlas-backup'||!Array.isArray(data.favorites)||!Array.isArray(data.bookmarks))throw Error('這不是有效的靈感藏書室備份檔');
+      if(!confirm('還原備份會覆蓋目前的收藏、已寫過紀錄及舊版自訂題庫。確定要還原嗎？'))return;
+      const candidate={
+        custom:Array.isArray(data.custom)?data.custom:[],
+        favorites:data.favorites,
+        bookmarks:data.bookmarks,
+        completed:Array.isArray(data.completed)?data.completed:[],
+        showAdult:Boolean(data.showAdult),
+        randomUnwritten:Boolean(data.randomUnwritten),
+        searchInTitles:typeof data.searchInTitles==='boolean'?data.searchInTitles:true,
+        searchInItems:typeof data.searchInItems==='boolean'?data.searchInItems:false
+      };
+      if(!candidate.searchInTitles&&!candidate.searchInItems)candidate.searchInTitles=true;
+      // 儲存成功才切換畫面上的紀錄，避免匯入失敗時失去原資料。
+      if(!safeStorage.set(STORAGE_KEY,JSON.stringify(candidate)))throw Error('瀏覽器儲存失敗，請勿關閉目前網頁');
+      custom=candidate.custom;
+      favs=new Set(candidate.favorites);
+      bookmarks=new Set(candidate.bookmarks);
+      completed=new Set(candidate.completed);
+      showAdult=candidate.showAdult;
+      randomUnwritten=candidate.randomUnwritten;
+      searchInTitles=candidate.searchInTitles;
+      searchInItems=candidate.searchInItems;
+      currentPage='explore';currentCategory='全部';mode='groups';query='';$('#searchInput').value='';limit=42;
+      render();toast('已成功還原收藏與寫作進度');
+    }catch(err){alert('還原失敗：'+err.message)}finally{$('#backupInput').value=''}
   }
   function downloadBackup(){
-    const json=JSON.stringify({format:'prompt-atlas-backup',version:2,exportedAt:new Date().toISOString(),custom,favorites:[...favs],bookmarks:[...bookmarks],completed:[...completed],showAdult,randomUnwritten},null,2);
-    downloadText('靈感藏書室_收藏與自訂題庫備份.json',json,'application/json;charset=utf-8');toast('已匯出備份檔');
+    const json=JSON.stringify({format:'prompt-atlas-backup',version:2,exportedAt:new Date().toISOString(),custom,favorites:[...favs],bookmarks:[...bookmarks],completed:[...completed],showAdult,randomUnwritten,searchInTitles,searchInItems},null,2);
+    downloadText('靈感藏書室_收藏與寫作進度備份.json',json,'application/json;charset=utf-8');toast('已匯出備份檔');
   }
   // Event delegation keeps thousands of cards lightweight.
   document.addEventListener('click',e=>{
@@ -453,6 +487,7 @@
     if(action==='closeOverlay'){if(e.target===btn)closeDialog();return}
     if(action==='close'){closeDialog();return}
     if(action==='open'){openGroup(id);return}
+    if(action==='goToGroup'){openGroup(id,num);return}
     if(action==='complete'){
       const g=getGroup(id),item=getItem(g,num);if(!g||!item)return;
       const k=promptKey(g,item);completed.has(k)?completed.delete(k):completed.add(k);save();render();
@@ -487,18 +522,37 @@
     if(action==='category'){currentCategory=btn.dataset.category;limit=42;render();return}
     if(action==='mode'){mode=btn.dataset.mode;limit=42;render();return}
     if(action==='loadMore'){limit+=42;render();return}
-    if(action==='import'){$('#fileInput').click();return}
+    if(action==='backup'){downloadBackup();return}
+    if(action==='restore'){$('#backupInput').click();return}
     if(action==='reset'){currentPage='explore';currentCategory='全部';query='';$('#searchInput').value='';mode='groups';limit=42;render();return}
   });
   $('#searchInput').addEventListener('input',e=>{
-    const wasEmpty=!query.trim();query=e.target.value.trim();if(wasEmpty&&query)mode='prompts';limit=42;render();
+    const wasEmpty=!query.trim();query=e.target.value.trim();
+    if(wasEmpty&&query)mode=searchInTitles&&!searchInItems?'groups':'prompts';
+    limit=42;render();
   });
+  function updateSearchScope(changed){
+    searchInTitles=$('#searchInTitles').checked;
+    searchInItems=$('#searchInItems').checked;
+    if(!searchInTitles&&!searchInItems){
+      if(changed==='titles')searchInItems=true;else searchInTitles=true;
+      toast('搜尋範圍至少需要勾選一項');
+    }
+    if(query){
+      if(searchInTitles&&!searchInItems)mode='groups';
+      if(searchInItems&&!searchInTitles)mode='prompts';
+    }
+    limit=42;save();render();
+  }
+  $('#searchInTitles').addEventListener('change',()=>updateSearchScope('titles'));
+  $('#searchInItems').addEventListener('change',()=>updateSearchScope('items'));
   $('#sortSelect').addEventListener('change',e=>{order=e.target.value;render()});
   $('#progressFilter').addEventListener('change',e=>{progressFilter=e.target.value;limit=42;if(progressFilter!=='all')mode='prompts';render()});
   $('#randomUnwritten').addEventListener('change',e=>{randomUnwritten=e.target.checked;save()});
   $('#adultToggle').addEventListener('change',e=>{showAdult=e.target.checked;if(!showAdult&&currentCategory==='成人向 18+')currentCategory='全部';save();render();if(openDetailId)closeDialog()});
-  $('#fileInput').addEventListener('change',e=>handleImport(e.target.files?.[0]));
+  $('#backupInput').addEventListener('change',e=>restoreBackup(e.target.files?.[0]));
   $('#backupLink').addEventListener('click',e=>{e.preventDefault();downloadBackup()});
+  $('#restoreLink').addEventListener('click',e=>{e.preventDefault();$('#backupInput').click()});
   document.addEventListener('keydown',e=>{
     if(e.key==='Escape'){if($('#modalRoot').innerHTML)closeDialog();else if(query){query='';$('#searchInput').value='';render()}return}
     if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('#searchInput').focus()}
