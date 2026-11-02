@@ -177,6 +177,92 @@
     @media(max-width:1100px){.shell{padding:0 24px}.content{grid-template-columns:190px minmax(0,1fr);gap:22px}.card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.mainnav{margin-left:8px}.hero:after{right:40px}}
     @media(max-width:760px){.shell{padding:0 16px}.topbar{height:64px}.brand-name{font-size:15px}.brand-en{display:none}.brand-mark{height:34px;width:34px;font-size:21px}.mainnav{margin-left:auto;gap:0}.nav-button{padding:8px 9px;font-size:12px;gap:5px}.nav-button svg{width:15px}.top-action{display:none}.hero{margin-top:16px;padding:29px 23px 26px;min-height:0;border-radius:18px}.hero::before{right:-260px}.hero:after{right:25px;top:5px;font-size:65px;opacity:.6}h1{font-size:27px}.hero p{font-size:12px;margin-bottom:20px}.searchbox{height:50px}.hero-quick{display:flex;gap:8px;margin-top:13px}.hero-quick button{border:1px solid #dcd3f4;border-radius:9px;background:#fff9;color:#6859b0;font-size:12px;font-weight:700;padding:7px 13px}.content{display:block;margin-top:25px;padding-bottom:60px}.sidebar{position:static;margin-bottom:24px}.sidebar-title{margin:0 0 10px}.category-list{flex-direction:row;overflow:auto;padding-bottom:6px;scrollbar-width:none;gap:7px}.category-list::-webkit-scrollbar{display:none}.cat-btn{width:auto;flex:0 0 auto;padding:7px 11px;background:#fff;border:1px solid var(--border);font-size:12px;gap:7px}.cat-btn.active{border-color:#d7c9f7}.cat-symbol{width:auto}.cat-num{margin-left:0}.side-divider{display:none}.side-note{margin-top:5px;display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:10px;gap:10px}.side-small{display:none}.section-header{align-items:flex-start;flex-direction:column;gap:13px;margin-bottom:16px}h2{font-size:20px}.section-sub{font-size:11px}.view-tools{width:100%;justify-content:space-between}.card-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.group-card{padding:14px 13px;min-height:239px;border-radius:14px}.group-title{font-size:14px;margin-top:9px}.preview-list{padding-top:10px}.preview-list li{font-size:11px}.group-meta{font-size:10px}.group-foot{align-items:flex-start}.open-btn{font-size:11px}.foot-count{font-size:10px}.prompt-grid{grid-template-columns:1fr}.footer{flex-direction:column;align-items:flex-start}.dialog-head{padding:18px}.dialog-head h2{font-size:19px}.dialog-actions{padding:12px 16px}.dialog-body{padding:6px 16px 20px}.overlay{padding:9px}.dialog{max-height:91vh;border-radius:16px}.random-card{padding:30px 20px}.random-card .random-title{font-size:21px}}
     @media(max-width:430px){.storage-hint .hint-text{min-width:190px}.search-scope{gap:8px}.scope-help{width:100%}.search-scope-label{width:100%;margin-right:0}.nav-button{padding:8px;font-size:11px}.brand{gap:7px}.brand-name{font-size:14px}.nav-button .nav-label{display:none}.card-grid{grid-template-columns:1fr}.group-card{min-height:215px}.preview-list{min-height:auto}.hero:after{right:0;opacity:.28}.search-key{display:none}}
+
+    /* Sources and credits, added in V6. */
+    .source-panel{border:1px solid #e8e3ef;background:linear-gradient(115deg,#fff,#fbf9fe);border-radius:18px;padding:25px 29px;margin-top:2px;margin-bottom:28px;scroll-margin-top:100px}
+    .source-eyebrow{font-size:10px;letter-spacing:1.6px;font-weight:800;color:#8c80b8;margin-bottom:7px}
+    .source-panel h2{font-size:19px;color:#3e3b4b;line-height:1.4;margin:0 0 8px}
+    .source-desc{color:#777482;font-size:12px;line-height:1.85;margin:0 0 15px}
+    .source-items{display:flex;gap:10px;flex-wrap:wrap}
+    .source-item{display:inline-flex;gap:8px;align-items:center;border:1px solid #e3dced;background:white;border-radius:10px;color:#685a9a;font-size:12px;font-weight:700;text-decoration:none;padding:10px 13px;transition:background .15s,border-color .15s}
+    .source-item:hover,.source-item:focus-visible{background:#f5f1ff;border-color:#c6b9e8;text-decoration:underline;text-underline-offset:3px}
+    .source-item span{color:#a49ab7;font-weight:600;font-size:11px}
+    .source-thanks{font-size:12px;color:#777482;line-height:1.85;margin:16px 0 0}
+    .source-thanks strong{color:#67588f}
+    .source-jump{display:inline-block;font-size:11px;font-weight:700;color:#7060a7;text-decoration:none;margin:13px 0 0 11px}
+    .source-jump:hover{text-decoration:underline}
+    .footer-credits{color:#8473bd;text-decoration:none}
+    .footer-credits:hover{text-decoration:underline}
+    @media(max-width:760px){.source-panel{padding:20px 17px;margin-bottom:24px;border-radius:14px}.source-panel h2{font-size:17px}.source-items{display:flex;flex-direction:column;align-items:stretch}.source-item{justify-content:space-between;flex-wrap:wrap}.source-jump{margin:12px 0 0 1px}}
+
+    /* V7 · restrained micro-interactions: soft hover, gentle lifts, press feedback,
+       understated entry animation and an accessible completed-state response. */
+    .searchbox{transition:border-color .26s ease,box-shadow .26s ease,background-color .26s ease}
+    .searchbox:focus-within{background:#fff;box-shadow:0 0 0 3px #d8d0fc66,0 10px 26px rgba(89,73,155,.11)}
+    .scope-choice,.cat-btn,.top-action,.nav-button,.segment,.action-btn,.random-by-category,
+    .secondary-btn,.complete-toggle,.load-more,.source-item,.icon-btn,.hero-quick button,.submit-link{
+      transition:background-color .22s ease,color .22s ease,border-color .22s ease,
+                 box-shadow .22s ease,transform .22s ease;
+    }
+    .group-card,.prompt-card{
+      position:relative;isolation:isolate;
+      transition:transform .3s cubic-bezier(.2,.8,.2,1),
+                 background-color .3s ease,border-color .3s ease,box-shadow .3s ease;
+    }
+    .group-card::before,.prompt-card::before{
+      content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+      background:radial-gradient(ellipse 140px 100px at 100% 0%,rgba(217,206,248,.24),transparent 85%);
+      opacity:0;transition:opacity .3s ease;z-index:-1;
+    }
+    .open-btn .icon{transition:transform .24s ease}
+    .open-btn:hover .icon,.open-btn:focus-visible .icon{transform:translateX(4px)}
+    .source-link,.source-jump,.footer-credits{transition:color .2s ease,text-decoration-color .2s ease}
+    .source-item span{transition:transform .24s ease}
+    .progress-meter span{transition:width .4s cubic-bezier(.2,.8,.2,1);background:linear-gradient(90deg,#9bcab2,#77b397)}
+    .complete-toggle.is-done{box-shadow:0 1px 6px rgba(83,145,109,.12)}
+    .complete-toggle.check-pop{animation:completionPop .38s cubic-bezier(.2,.9,.2,1)}
+    .overlay{animation:motionVeil .2s ease both}
+    .dialog{animation:motionDialog .3s cubic-bezier(.2,.8,.2,1) both}
+    .hero-content{animation:motionRise .5s cubic-bezier(.2,.8,.2,1) both}
+    #results.first-reveal .group-card:nth-child(-n+9),#results.first-reveal .prompt-card:nth-child(-n+9){
+      animation:motionRise .36s ease both;
+    }
+    #results.first-reveal .group-card:nth-child(2),#results.first-reveal .prompt-card:nth-child(2){animation-delay:.045s}
+    #results.first-reveal .group-card:nth-child(3),#results.first-reveal .prompt-card:nth-child(3){animation-delay:.09s}
+    #results.first-reveal .group-card:nth-child(4),#results.first-reveal .prompt-card:nth-child(4){animation-delay:.135s}
+    #results.first-reveal .group-card:nth-child(5),#results.first-reveal .prompt-card:nth-child(5){animation-delay:.18s}
+    #results.first-reveal .group-card:nth-child(6),#results.first-reveal .prompt-card:nth-child(6){animation-delay:.225s}
+    #results.first-reveal .group-card:nth-child(7),#results.first-reveal .prompt-card:nth-child(7){animation-delay:.27s}
+    #results.first-reveal .group-card:nth-child(8),#results.first-reveal .prompt-card:nth-child(8){animation-delay:.315s}
+    #results.first-reveal .group-card:nth-child(9),#results.first-reveal .prompt-card:nth-child(9){animation-delay:.36s}
+    @keyframes motionRise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes motionVeil{from{opacity:0}to{opacity:1}}
+    @keyframes motionDialog{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+    @keyframes completionPop{0%{transform:scale(1)}38%{transform:scale(1.075)}100%{transform:scale(1)}}
+    @media(hover:hover) and (pointer:fine){
+      .group-card:hover,.prompt-card:hover{
+        transform:translateY(-4px);background-color:#fefeff;
+        border-color:#cec5ee;box-shadow:0 17px 36px rgba(54,46,91,.105);
+      }
+      .group-card:hover::before,.prompt-card:hover::before{opacity:1}
+      .source-item:hover span{transform:translateX(3px)}
+      .top-action:hover,.action-btn:hover,.random-by-category:hover,.source-item:hover{transform:translateY(-1px)}
+    }
+    button:active:not(:disabled),.source-item:active,.submit-link:active{
+      transform:scale(.97);transition-duration:.08s;
+    }
+    /* Accessibility: keep motion optional and avoid moving hovered cards on touch devices. */
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      .hero-content,.overlay,.dialog,.complete-toggle.check-pop,
+      #results.first-reveal .group-card,#results.first-reveal .prompt-card{
+        animation:none!important;
+      }
+      .group-card,.prompt-card,.searchbox,.open-btn .icon,.progress-meter span,
+      .scope-choice,.cat-btn,.top-action,.nav-button,.segment,.action-btn,
+      .random-by-category,.secondary-btn,.complete-toggle,.load-more,.source-item,
+      .icon-btn,.hero-quick button,.submit-link{transition:none!important}
+    }
   </style>
 </head>
 <body>
@@ -218,6 +304,7 @@
         <div class="category-list" id="categoryList"></div>
         <div class="side-divider"></div>
         <div class="side-note"><label class="switch-label"><input type="checkbox" id="adultToggle"><span>顯示成人向題庫（18+）</span></label><p class="side-small">預設不顯示成人主題；開啟後才會納入搜尋、分類及隨機抽題。</p></div>
+        <a class="source-jump" href="#sources" aria-label="跳至資料來源與致謝">↗ 資料來源與致謝</a>
       </aside>
       <main class="library-main" id="mainContent">
         <div class="section-header">
@@ -230,7 +317,17 @@
         <div class="more-wrap" id="moreWrap" hidden><button class="load-more" data-action="loadMore">顯示更多題目</button></div>
       </main>
     </div>
-    <footer class="footer"><span>✦ 靈感藏書室 · 你的私人創作題庫</span><span>完成紀錄與收藏僅儲存於目前瀏覽器，不會自動同步到其他裝置。<a href="#" id="backupLink" style="color:#8473bd;text-decoration:none;margin-left:8px">下載備份</a> · <a href="#" id="restoreLink" style="color:#8473bd;text-decoration:none">還原備份</a> · <a href="mailto:19.youjiu@gmail.com" style="color:#8473bd;text-decoration:none">聯絡站長</a></span></footer>
+    <section class="source-panel" id="sources" aria-labelledby="sourcesTitle">
+      <div class="source-eyebrow">SOURCES &amp; CREDITS</div>
+      <h2 id="sourcesTitle">資料來源與致謝</h2>
+      <p class="source-desc">這裡收藏的創作題目來自不同創作者及公開分享的題單。部分資料參考以下彙整來源；各題組若有原作者說明與使用要求，請以原文為準。</p>
+      <div class="source-items">
+        <a class="source-item" href="https://www.plurk.com/p/kdoqwl" target="_blank" rel="noopener noreferrer" aria-label="開啟 Plurk 題庫來源貼文（新分頁）">◈ Plurk 來源貼文 <span>開啟連結 ↗</span></a>
+        <a class="source-item" href="https://docs.google.com/document/d/1_XQBeiuY5m6p3MHS0g3NkzchK2gkmLBuVQZuDx5FUDw/edit?tab=t.uvyx713v2i5n" target="_blank" rel="noopener noreferrer" aria-label="開啟 Google 文件文字整理（新分頁）">▤ Google 文件文字整理 <span>開啟連結 ↗</span></a>
+      </div>
+      <p class="source-thanks">特別感謝 <strong>cobra203</strong> 將題目整理成文字，讓這些創作靈感更容易查找與閱讀；也感謝每位分享題目的原作者。</p>
+    </section>
+    <footer class="footer"><span>✦ 靈感藏書室 · 你的私人創作題庫 · <a class="footer-credits" href="#sources">資料來源與致謝</a></span><span>完成紀錄與收藏僅儲存於目前瀏覽器，不會自動同步到其他裝置。<a href="#" id="backupLink" style="color:#8473bd;text-decoration:none;margin-left:8px">下載備份</a> · <a href="#" id="restoreLink" style="color:#8473bd;text-decoration:none">還原備份</a> · <a href="mailto:19.youjiu@gmail.com" style="color:#8473bd;text-decoration:none">聯絡站長</a></span></footer>
   </div>
   <input type="file" id="backupInput" accept=".json,application/json" aria-label="還原題庫紀錄備份 JSON" hidden>
   <div id="modalRoot"></div><div id="toast" role="status" aria-live="polite"></div>
@@ -375,6 +472,7 @@
     return `<article class="prompt-card ${isCompleted(g,item)?'is-done':''}"><div class="prompt-top"><div class="mini-meta">#${String(item.index).padStart(2,'0')} · ${highlight(g.title,searchInTitles?query:'')}</div><button class="icon-btn ${isFav?'selected':''}" aria-label="${isFav?'取消收藏':'收藏此題'}" data-action="star" data-id="${esc(g.id)}" data-num="${item.index}">${ic('star')}</button></div><div class="prompt-title">${highlight(item.text,searchInItems?query:'')}</div><div class="prompt-foot"><button class="text-button" data-action="open" data-id="${esc(g.id)}">${esc(g.category)}</button><button class="text-button" data-action="copy" data-id="${esc(g.id)}" data-num="${item.index}">${ic('copy')} 複製</button>${completedButton(g,item)}</div></article>`;
   }
   function emptyView(){return `<div class="empty"><span class="empty-star">✧</span><h3>這裡暫時沒有找到靈感</h3><p>${currentPage==='favorites'?'點選題組或題目上的星星，就可以在這裡看到收藏。':'試著換個關鍵字，或選擇其他分類看看。'}</p><button class="secondary-btn" data-action="reset">${currentPage==='favorites'?'返回探索題庫':'清除篩選'}</button></div>`}
+  let firstPaint=true;
   function render(){
     renderCategory();
     const groups=filteredGroups(),prompts=filteredPrompts();
@@ -400,6 +498,7 @@
     const raw=mode==='groups'?groups:prompts;
     const entries=raw.slice(0,limit);
     $('#results').innerHTML=entries.length?`<div class="${mode==='groups'?'card-grid':'prompt-grid'}">${entries.map(item=>mode==='groups'?groupCard(item):promptCard(item)).join('')}</div>`:emptyView();
+    if(firstPaint){$('#results').classList.add('first-reveal');firstPaint=false}else $('#results').classList.remove('first-reveal');
     $('#moreWrap').hidden=raw.length<=limit;
     if(!$('#moreWrap').hidden)$('#moreWrap button').textContent=`再顯示一些（尚有 ${fmt(raw.length-limit)} ${mode==='groups'?'組':'題'}）`;
   }
@@ -498,6 +597,8 @@
         const gg=getGroup(b.dataset.id),ii=getItem(gg,b.dataset.num);if(!ii)return;
         const done=isCompleted(gg,ii);b.classList.toggle('is-done',done);b.setAttribute('aria-pressed',String(done));b.textContent=done?'✓ 已寫過':'○ 標記已寫過';
         b.closest('.detail-row,.prompt-card')?.classList.toggle('is-done',done);
+        if(done&&b.dataset.id===id&&Number(b.dataset.num)===Number(num)){b.classList.remove('check-pop');void b.offsetWidth;b.classList.add('check-pop');}
+        else b.classList.remove('check-pop');
       });
       toast(completed.has(k)?'已標記為寫過':'已改回未寫過');return;
     }
