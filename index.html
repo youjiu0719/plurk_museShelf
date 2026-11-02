@@ -263,6 +263,23 @@
       .random-by-category,.secondary-btn,.complete-toggle,.load-more,.source-item,
       .icon-btn,.hero-quick button,.submit-link{transition:none!important}
     }
+
+    /* V8 · 投稿表單：先在站內填寫，再選擇 Gmail／郵件程式／複製。 */
+    .submission-body{padding:19px 27px 25px;overflow:auto;overscroll-behavior:contain}
+    .submission-intro{font-size:12px;color:#817e91;margin:0 0 15px;line-height:1.8}
+    .submission-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+    .submission-field label{font-size:12px;font-weight:780;color:#565469}
+    .submission-field input,.submission-field textarea{width:100%;padding:10px 12px;border:1px solid #e1dce9;border-radius:10px;background:#fff;color:#292d3d;font:inherit;font-size:13px;line-height:1.6;outline:none;resize:vertical}
+    .submission-field input:focus,.submission-field textarea:focus{border-color:#9d8cdd;box-shadow:0 0 0 3px #e7e0fb}
+    .submission-buttons{display:flex;gap:9px;flex-wrap:wrap;margin:17px 0 9px}
+    .submission-buttons button{flex:1 1 135px;justify-content:center;min-height:39px}
+    .submission-email{background:#f8f6fd;border:1px solid #ede8f6;border-radius:10px;padding:10px 13px;font-size:12px;color:#645e7c;margin:12px 0}
+    .submission-fallback{font-size:11px;color:#858096;line-height:1.8;margin:9px 0 0}
+    .submission-fallback strong{color:#6555b4}
+    .submission-close{background:#fff;border:1px solid #e6e3ef;color:#777286;border-radius:9px;padding:7px 11px;font-weight:700}
+    .submission-email button{background:none;border:0;color:#6254b4;text-decoration:underline;text-underline-offset:3px;font-size:12px;margin-left:7px}
+    @media(max-width:760px){.submission-body{padding:15px 16px 22px}.submission-buttons button{flex:1 1 100%;}.hero-quick .submit-link{line-height:1.5}}
+    @media(prefers-reduced-motion:reduce){.submission-buttons button{transition:none!important}}
   </style>
 </head>
 <body>
@@ -275,7 +292,7 @@
       </nav>
       <div class="grow"></div>
       <button class="top-action" data-action="random" title="從目前分類隨機抽題"><span>✧</span> 隨機抽題</button>
-      <a class="top-action" href="mailto:19.youjiu@gmail.com?subject=%E3%80%90%E9%9D%88%E6%84%9F%E8%97%8F%E6%9B%B8%E5%AE%A4%E3%80%91%E5%89%B5%E4%BD%9C%E9%A1%8C%E7%9B%AE%E6%8A%95%E7%A8%BF&amp;body=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%83%B3%E6%8A%95%E7%A8%BF%E6%96%B0%E7%9A%84%E5%89%B5%E4%BD%9C%E9%A1%8C%E7%B5%84%EF%BC%9A%0A%0A%E9%A1%8C%E7%B5%84%E5%90%8D%E7%A8%B1%EF%BC%9A%0A%E5%8E%9F%E4%BD%9C%E8%80%85%EF%BC%8F%E4%BE%86%E6%BA%90%E9%80%A3%E7%B5%90%EF%BC%9A%0A%E9%A1%8C%E7%9B%AE%E5%85%A7%E5%AE%B9%EF%BC%88%E5%8F%AF%E7%9B%B4%E6%8E%A5%E8%B2%BC%E4%B8%8A%E6%B8%85%E5%96%AE%EF%BC%89%EF%BC%9A%0A%0A%E5%85%B6%E4%BB%96%E8%AA%AA%E6%98%8E%EF%BC%9A%0A" title="開啟郵件程式，寄送創作題組給站長">✉ 投稿素材</a>
+      <button type="button" class="top-action" data-action="submitMaterial" aria-haspopup="dialog" title="填寫題組並選擇寄信方式">✉ 投稿素材</button>
     </div>
   </header>
   <div class="shell">
@@ -295,7 +312,7 @@
           <label class="scope-choice"><input id="searchInItems" type="checkbox"><span>題目（單題文字）</span></label>
           <span class="scope-help">可複選，至少選一項</span>
         </div>
-        <div class="hero-quick"><button data-action="random">✧ 隨機抽題</button><a href="mailto:19.youjiu@gmail.com?subject=%E3%80%90%E9%9D%88%E6%84%9F%E8%97%8F%E6%9B%B8%E5%AE%A4%E3%80%91%E5%89%B5%E4%BD%9C%E9%A1%8C%E7%9B%AE%E6%8A%95%E7%A8%BF&amp;body=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%83%B3%E6%8A%95%E7%A8%BF%E6%96%B0%E7%9A%84%E5%89%B5%E4%BD%9C%E9%A1%8C%E7%B5%84%EF%BC%9A%0A%0A%E9%A1%8C%E7%B5%84%E5%90%8D%E7%A8%B1%EF%BC%9A%0A%E5%8E%9F%E4%BD%9C%E8%80%85%EF%BC%8F%E4%BE%86%E6%BA%90%E9%80%A3%E7%B5%90%EF%BC%9A%0A%E9%A1%8C%E7%9B%AE%E5%85%A7%E5%AE%B9%EF%BC%88%E5%8F%AF%E7%9B%B4%E6%8E%A5%E8%B2%BC%E4%B8%8A%E6%B8%85%E5%96%AE%EF%BC%89%EF%BC%9A%0A%0A%E5%85%B6%E4%BB%96%E8%AA%AA%E6%98%8E%EF%BC%9A%0A" class="submit-link">✉ 投稿素材</a></div>
+        <div class="hero-quick"><button data-action="random">✧ 隨機抽題</button><button type="button" class="submit-link" data-action="submitMaterial" aria-haspopup="dialog" title="填寫題組並選擇寄信方式">✉ 投稿素材</button></div>
       </div>
     </section>
     <div class="content">
@@ -542,7 +559,62 @@
     $('#modalRoot').innerHTML=`<div class="overlay" data-action="closeOverlay"><div class="dialog" role="dialog" aria-modal="true" aria-label="隨機靈感"><div class="dialog-head"><div class="dialog-head-info"><span class="pill">RANDOM INSPIRATION</span><h2>讓靈感決定下一段故事</h2><div class="dialog-desc">抽題範圍：${esc(id?g.title:currentCategory==='全部'?'全部分類':currentCategory)}${randomUnwritten?' · 只抽未寫過':''}</div></div><button class="icon-btn" data-action="close" aria-label="關閉">${ic('close')}</button></div><div class="random-card"><div class="random-illustration">✧</div><div class="random-label">#${String(item.index).padStart(2,'0')} · 隨機命題</div><div class="random-title">${esc(item.text)}</div><div class="random-group">出自 ${esc(g.title)}</div>${context?`<div class="random-context">${context}</div>`:''}<div class="random-actions"><button class="action-btn primary" data-action="randomAgain" data-id="${id?esc(id):''}">${ic('shuffle')} 再抽一題</button><button class="action-btn" data-action="goToGroup" data-id="${esc(g.id)}" data-num="${item.index}">${ic('arrow')} 查看這組完整題目</button><button class="action-btn" data-action="copy" data-id="${esc(g.id)}" data-num="${item.index}">${ic('copy')} 複製</button><button class="action-btn" data-action="star" data-id="${esc(g.id)}" data-num="${item.index}">${ic('star')} ${isFav?'已收藏':'收藏'}</button>${completedButton(g,item)}</div></div></div></div>`;
     document.body.style.overflow='hidden';
   }
-  // 題目投稿改為郵件連結；僅支援從舊版及新版的 JSON 備份還原使用者紀錄。
+
+  // V8: 郵件投稿。不需登入本站／不會自動送出；避免 mailto 在無預設郵件程式時「按了沒反應」。
+  const SUBMISSION_TO='19.youjiu@gmail.com';
+  const SUBMISSION_SUBJECT='【靈感藏書室】創作題目投稿';
+  function openSubmission(){
+    openDetailId=null;
+    $('#modalRoot').innerHTML=`<div class="overlay" data-action="closeOverlay"><section class="dialog" role="dialog" aria-modal="true" aria-labelledby="submissionTitle">
+      <div class="dialog-head"><div class="dialog-head-info"><span class="pill">SUBMIT A PROMPT</span><h2 id="submissionTitle">投稿創作素材</h2><p class="dialog-desc">填寫後選擇使用 Gmail，或複製內容到你習慣的信箱寄出。</p></div><button class="submission-close" type="button" data-action="close" aria-label="關閉投稿視窗">✕</button></div>
+      <div class="submission-body">
+        <p class="submission-intro">歡迎分享三十題或其他創作命題。請盡可能填寫原作者與來源，方便保留署名；網站不會自動上傳或寄出任何資料。</p>
+        <form id="submissionForm" autocomplete="on" novalidate>
+          <div class="submission-field"><label for="submitTitle">題組名稱 <span aria-hidden="true">*</span></label><input id="submitTitle" type="text" maxlength="160" placeholder="例如：四季三十題" required></div>
+          <div class="submission-field"><label for="submitSource">原作者／來源網址</label><input id="submitSource" type="text" maxlength="2000" placeholder="原作者、Plurk、Google 文件等"></div>
+          <div class="submission-field"><label for="submitContent">題目內容 <span aria-hidden="true">*</span></label><textarea id="submitContent" rows="6" placeholder="一行一題，也可以貼完整題單" required></textarea></div>
+          <div class="submission-field"><label for="submitNote">其他說明（選填）</label><textarea id="submitNote" rows="2" placeholder="使用規範、分類建議或備註"></textarea></div>
+          <div class="submission-email">收件人：<strong>${SUBMISSION_TO}</strong><button type="button" data-action="copyRecipient">複製信箱</button></div>
+          <div class="submission-buttons"><button type="button" class="action-btn primary" data-action="submitGmail">✉ 用 Gmail 網頁版寄信 ↗</button><button type="button" class="action-btn" data-action="submitEmailApp">使用郵件程式</button><button type="button" class="action-btn" data-action="submitCopy">複製完整投稿</button></div>
+          <p class="submission-fallback" id="submissionTip">注意：<strong>點「Gmail」只會開啟已填入收件人的草稿</strong>，仍要由你確認並按下寄送。未登入 Gmail 時須先登入；若沒有跳出郵件畫面，請使用「複製完整投稿」。</p>
+        </form>
+      </div>
+    </section></div>`;
+    document.body.style.overflow='hidden';
+    $('#submitTitle').focus();
+  }
+  function submissionData(){
+    const title=$('#submitTitle').value.trim(),source=$('#submitSource').value.trim(),content=$('#submitContent').value.trim(),note=$('#submitNote').value.trim();
+    if(!title||!content){
+      const field=!title?$('#submitTitle'):$('#submitContent');field.focus();
+      toast(!title?'請先填寫題組名稱':'請先填入題目內容');return null;
+    }
+    const body=['你好，我想投稿一組創作題目：','',`題組名稱：${title}`,`原作者／來源：${source||'（未填）'}`,'', '題目內容：',content,'',`其他說明：${note||'（無）'}`].join('\n');
+    return {title,source,content,note,body};
+  }
+  function submitViaGmail(){
+    const data=submissionData();if(!data)return;
+    // 超長郵件不透過網址傳送（可能被瀏覽器截斷），先保留完整內容在頁面供複製。
+    const isLong=encodeURIComponent(data.body).length>4800;
+    const body=isLong?'（題目內容較長，請先回原網站按「複製完整投稿」，再貼上完整內容。）':data.body;
+    const url='https://mail.google.com/mail/?view=cm&fs=1&to='+encodeURIComponent(SUBMISSION_TO)+'&su='+encodeURIComponent(SUBMISSION_SUBJECT)+'&body='+encodeURIComponent(body);
+    const win=window.open(url,'_blank');
+    if(win){try{win.opener=null;}catch(e){}}
+    const tip=$('#submissionTip');
+    if(isLong){tip.innerHTML='<strong>題單太長，不適合放進連結：</strong>Gmail 草稿已開啟，請按「複製完整投稿」後貼上信件內文，避免內容遺漏。';}
+    else{tip.innerHTML='已嘗試開啟 Gmail 草稿。<strong>請在 Gmail 按「寄送」才會真的投稿</strong>；若沒有開啟，請檢查新分頁或使用複製功能。';}
+    if(!win)toast('瀏覽器可能封鎖新分頁，可改用「複製完整投稿」');
+  }
+  function submitViaEmailApp(){
+    const data=submissionData();if(!data)return;
+    // Email 軟體連結僅對有設定預設郵件程式的設備有效。
+    const isLong=encodeURIComponent(data.body).length>4800;
+    const body=isLong?'（題目內容較長，請回原網站複製完整投稿內容貼上。）':data.body;
+    const link='mailto:'+SUBMISSION_TO+'?subject='+encodeURIComponent(SUBMISSION_SUBJECT)+'&body='+encodeURIComponent(body);
+    window.location.href=link;
+    $('#submissionTip').innerHTML=isLong?'題目較長，郵件中沒有自動填入完整內容；請使用「複製完整投稿」再貼上。':'如果沒有跳出郵件畫面，表示這個裝置可能尚未設定預設郵件程式。請改用 Gmail 或複製完整投稿。';
+  }
+  // 投稿以使用者選擇寄信方式完成；備份還原不受影響。
   async function restoreBackup(file){
     if(!file)return;
     try{
@@ -585,6 +657,11 @@
     const action=btn.dataset.action,id=btn.dataset.id,num=btn.dataset.num;
     if(action==='closeOverlay'){if(e.target===btn)closeDialog();return}
     if(action==='close'){closeDialog();return}
+    if(action==='submitMaterial'){openSubmission();return}
+    if(action==='submitGmail'){submitViaGmail();return}
+    if(action==='submitEmailApp'){submitViaEmailApp();return}
+    if(action==='submitCopy'){const data=submissionData();if(data)copyText(data.body);return}
+    if(action==='copyRecipient'){copyText(SUBMISSION_TO);return}
     if(action==='open'){openGroup(id);return}
     if(action==='goToGroup'){openGroup(id,num);return}
     if(action==='complete'){
@@ -627,6 +704,7 @@
     if(action==='restore'){$('#backupInput').click();return}
     if(action==='reset'){currentPage='explore';currentCategory='全部';query='';$('#searchInput').value='';mode='groups';limit=42;render();return}
   });
+  document.addEventListener('submit',e=>{if(e.target.id==='submissionForm'){e.preventDefault();submitViaGmail();}});
   $('#searchInput').addEventListener('input',e=>{
     const wasEmpty=!query.trim();query=e.target.value.trim();
     if(wasEmpty&&query)mode=searchInTitles&&!searchInItems?'groups':'prompts';
